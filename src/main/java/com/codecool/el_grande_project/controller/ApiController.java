@@ -27,6 +27,12 @@ public class ApiController {
         return placeService.getPlaces();
 
     }
+    @GetMapping("/placesContainWord")
+    @ResponseBody
+    public List<Place> getPlacesContainWord(@RequestParam String word) {
+        return placeService.getPlacesContainWord(word);
+
+    }
     @GetMapping("/placeInCity")
     @ResponseBody
     public List<Place> getCityPlaces(@RequestParam String city) {

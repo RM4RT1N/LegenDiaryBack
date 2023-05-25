@@ -22,7 +22,6 @@ public class CalculateDistance {
                 * Math.sin(deltalng / 2) * Math.sin(deltalng / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = EARTH_RADIUS * c;
-        System.out.println("odl " + distance);
         return distance <= radiusInKilometers;
 //
     }
