@@ -32,7 +32,12 @@ public class PlaceService {
     }
 
 
-
+    public List<Place> getPlacesContainWord(String word){
+        var wordUpper = word.toUpperCase();
+        return this.placeRepository.findAll().stream()
+                .filter(p->p.getName().toUpperCase().contains(wordUpper) || p.getDescription().toUpperCase().contains(wordUpper)
+                )
+                .collect(Collectors.toList());}
     public List<Place> getPlaceNearCity(String nameCity){
         City city = cityService.getCityByName(nameCity);
         return this.placeRepository.findAll().stream()
