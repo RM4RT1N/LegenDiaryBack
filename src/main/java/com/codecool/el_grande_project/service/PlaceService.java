@@ -6,6 +6,8 @@ import com.codecool.el_grande_project.repository.PlaceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.codecool.el_grande_project.util.CalculateDistance;
 @Service
@@ -51,4 +53,28 @@ public class PlaceService {
     }
 
 
+    public Place getPlaceById(Long id) {
+        Optional<Place> optionalPlace = placeRepository.findById(id);
+        if (optionalPlace.isPresent()) {
+            return optionalPlace.get();
+        } else {
+            throw new NoSuchElementException("Place with ID " + id + " does not exist");
+        }
+    }
+    public void updatePlace(Place newDataPlace){
+        Place placeToEdit = getPlaceById(newDataPlace.getId());
+        if (placeToEdit != null){
+            placeToEdit.setName(newDataPlace.getName());
+            placeToEdit.setDescription(newDataPlace.getDescription());
+            placeToEdit.setLatitude(newDataPlace.getLatitude());
+            placeToEdit.setLongitude(newDataPlace.getLongitude());
+            placeToEdit.setAdded_by_id_user(newDataPlace.getAdded_by_id_user());
+            placeToEdit.setCategory_id(newDataPlace.getCategory_id());
+        }
+        else{
+            throw new NoSuchElementException("Place with ID " + newDataPlace.getId() + " does not exist");
+        }
+        placeRepository.save(placeToEdit);
+
+    }
 }

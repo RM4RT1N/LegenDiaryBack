@@ -59,4 +59,28 @@ public class ApiController {
                 placeDto.getName()));
         return "OK";
     }
+    @GetMapping("/place/{id}")
+    @ResponseBody
+    public Place onePlace(@PathVariable("id") Long id) {
+        return this.placeService.getPlaceById(id);
+    }
+    @PatchMapping("/api/edit-legend/{id}")
+
+    public String updateLegend(@PathVariable("id") Long id, @RequestBody PlaceDTO placeDto) {
+        Place existingPlace = onePlace(id);
+
+        if (existingPlace == null) {
+            return "Obiekt o podanym identyfikatorze nie istnieje";
+        }
+
+        existingPlace.setCategory_id(placeDto.getCategory_id());
+        existingPlace.setLatitude(placeDto.getLatitude());
+        existingPlace.setLongitude(placeDto.getLongitude());
+        existingPlace.setDescription(placeDto.getDescription());
+        existingPlace.setName(placeDto.getName());
+
+        this.placeService.updatePlace(existingPlace);
+
+        return "OK";
+    }
 }
