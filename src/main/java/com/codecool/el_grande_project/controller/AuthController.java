@@ -16,13 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
+@CrossOrigin("*")
 public class AuthController {
     private AuthenticationManager authenticationManager;
     private UserRepository userRepository;
@@ -58,6 +56,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
+
 
         return new ResponseEntity<>(new AuthResponseDTO(token),HttpStatus.OK);
     }
