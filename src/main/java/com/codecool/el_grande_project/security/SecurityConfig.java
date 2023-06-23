@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/user/**").permitAll()
                 .and()
                 .httpBasic();
         http.addFilterBefore(myJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
