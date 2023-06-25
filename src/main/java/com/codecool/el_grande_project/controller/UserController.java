@@ -2,8 +2,6 @@ package com.codecool.el_grande_project.controller;
 
 import com.codecool.el_grande_project.DTO.UserDTO;
 import com.codecool.el_grande_project.service.UserService;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
