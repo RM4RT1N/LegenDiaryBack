@@ -1,29 +1,39 @@
 package com.codecool.el_grande_project.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Place {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long added_by_id_user;
+    private UUID id =UUID.randomUUID();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
     private Long category_id;
     private double latitude;
     private double longitude;
     private String description;
     private String name;
 
-    public Place() {
+
+
+    public Place(UserEntity user, Long category_id, double latitude, double longitude, String description, String name) {
+        this.user = user;
+        this.category_id = category_id;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.description = description;
+        this.name = name;
     }
-
-
 }

@@ -1,29 +1,36 @@
 package com.codecool.el_grande_project.controller;
 
+import com.codecool.el_grande_project.DTO.NewPlaceDTO;
 import com.codecool.el_grande_project.DTO.PlaceDTO;
 import com.codecool.el_grande_project.entity.City;
 import com.codecool.el_grande_project.entity.Place;
+import com.codecool.el_grande_project.entity.UserEntity;
+import com.codecool.el_grande_project.repository.UserRepository;
 import com.codecool.el_grande_project.service.CityService;
 import com.codecool.el_grande_project.service.PlaceService;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.UUID;
+
 @RestController
 @CrossOrigin("*")
 public class ApiController {
     private final PlaceService placeService;
     private final CityService cityService;
+    private final UserRepository userRepository;
 
 
-    public ApiController(PlaceService placeService, CityService cityService) {
+    public ApiController(PlaceService placeService, CityService cityService, UserRepository userRepository) {
         this.placeService = placeService;
         this.cityService = cityService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/places")
     @ResponseBody
-    public List<Place> getAllPlaces() {
+    public List<PlaceDTO> getAllPlaces() {
         return placeService.getPlaces();
 
     }
@@ -50,34 +57,36 @@ public class ApiController {
 
     }
     @PostMapping("/api/add-legend")
-    public String saveLegend(@RequestBody PlaceDTO placeDto) {
-        this.placeService.addPlace(new Place(null,1L,
-                placeDto.getCategory_id(),
-                placeDto.getLatitude(),
-                placeDto.getLongitude(),
-                placeDto.getDescription(),
-                placeDto.getName()));
+    public String saveLegend(@RequestBody NewPlaceDTO newPlaceDto) {
+        UserEntity user = userRepository.findById(newPlaceDto.getUserId()).get();
+        this.placeService.addPlace(new Place(
+                user,
+                newPlaceDto.getCategory_id(),
+                newPlaceDto.getLatitude(),
+                newPlaceDto.getLongitude(),
+                newPlaceDto.getDescription(),
+                newPlaceDto.getName()));
         return "OK";
     }
     @GetMapping("/place/{id}")
     @ResponseBody
-    public Place onePlace(@PathVariable("id") Long id) {
+    public Place onePlace(@PathVariable("id") UUID id) {
         return this.placeService.getPlaceById(id);
     }
     @PatchMapping("/api/edit-legend/{id}")
 
-    public String updateLegend(@PathVariable("id") Long id, @RequestBody PlaceDTO placeDto) {
+    public String updateLegend(@PathVariable("id") UUID id, @RequestBody NewPlaceDTO newPlaceDto) {
         Place existingPlace = onePlace(id);
 
         if (existingPlace == null) {
             return "Obiekt o podanym identyfikatorze nie istnieje";
         }
 
-        existingPlace.setCategory_id(placeDto.getCategory_id());
-        existingPlace.setLatitude(placeDto.getLatitude());
-        existingPlace.setLongitude(placeDto.getLongitude());
-        existingPlace.setDescription(placeDto.getDescription());
-        existingPlace.setName(placeDto.getName());
+        existingPlace.setCategory_id(newPlaceDto.getCategory_id());
+        existingPlace.setLatitude(newPlaceDto.getLatitude());
+        existingPlace.setLongitude(newPlaceDto.getLongitude());
+        existingPlace.setDescription(newPlaceDto.getDescription());
+        existingPlace.setName(newPlaceDto.getName());
 
         this.placeService.updatePlace(existingPlace);
 
