@@ -2,8 +2,10 @@ package com.codecool.el_grande_project.controller;
 
 import com.codecool.el_grande_project.DTO.PlaceDTO;
 import com.codecool.el_grande_project.entity.City;
+import com.codecool.el_grande_project.entity.Image;
 import com.codecool.el_grande_project.entity.Place;
 import com.codecool.el_grande_project.service.CityService;
+import com.codecool.el_grande_project.service.ImageService;
 import com.codecool.el_grande_project.service.PlaceService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +16,13 @@ import java.util.List;
 public class ApiController {
     private final PlaceService placeService;
     private final CityService cityService;
+    private final ImageService imageService;
 
 
-    public ApiController(PlaceService placeService, CityService cityService) {
+    public ApiController(PlaceService placeService, CityService cityService, ImageService imageService) {
         this.placeService = placeService;
         this.cityService = cityService;
+        this.imageService = imageService;
     }
 
     @GetMapping("/places")
@@ -47,7 +51,6 @@ public class ApiController {
     @ResponseBody
     public List<City> getAllCities() {
         return cityService.getCities();
-
     }
     @PostMapping("/api/add-legend")
     public String saveLegend(@RequestBody PlaceDTO placeDto) {
@@ -58,5 +61,18 @@ public class ApiController {
                 placeDto.getDescription(),
                 placeDto.getName()));
         return "OK";
+    }
+    @GetMapping("/images")
+    @CrossOrigin("*")
+    @ResponseBody
+    public List<Image> getAllImages() {
+        return imageService.getImages();
+
+    }
+    @GetMapping("/images/{legendId}")
+    @CrossOrigin("*")
+    @ResponseBody
+    public List<Image> getImagesByLegendId(@PathVariable String legendId) {
+        return imageService.getImagesByLegendId(Long.valueOf(legendId));
     }
 }
