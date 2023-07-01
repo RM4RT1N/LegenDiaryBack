@@ -1,9 +1,7 @@
 package com.codecool.el_grande_project.service;
 
 import com.codecool.el_grande_project.DTO.PlaceDTO;
-import com.codecool.el_grande_project.DTO.UserDTO;
 import com.codecool.el_grande_project.DTO.UserWithPlacesDTO;
-import com.codecool.el_grande_project.entity.Place;
 import com.codecool.el_grande_project.entity.UserEntity;
 import com.codecool.el_grande_project.mappers.PlaceMapper;
 import com.codecool.el_grande_project.mappers.UserMapper;
