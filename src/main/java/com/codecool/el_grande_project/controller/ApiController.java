@@ -3,11 +3,13 @@ package com.codecool.el_grande_project.controller;
 import com.codecool.el_grande_project.DTO.NewPlaceDTO;
 import com.codecool.el_grande_project.DTO.PlaceDTO;
 import com.codecool.el_grande_project.entity.City;
+import com.codecool.el_grande_project.entity.Image;
 import com.codecool.el_grande_project.entity.Place;
 import com.codecool.el_grande_project.entity.UserEntity;
 import com.codecool.el_grande_project.repository.UserRepository;
 import com.codecool.el_grande_project.service.CityService;
 import com.codecool.el_grande_project.service.PlaceService;
+import com.codecool.el_grande_project.service.ImageService;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,12 +22,14 @@ public class ApiController {
     private final PlaceService placeService;
     private final CityService cityService;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
 
-    public ApiController(PlaceService placeService, CityService cityService, UserRepository userRepository) {
+    public ApiController(PlaceService placeService, CityService cityService, UserRepository userRepository,ImageService imageService) {
         this.placeService = placeService;
         this.cityService = cityService;
         this.userRepository = userRepository;
+        this.imageService = imageService;
     }
 
     @GetMapping("/places")
@@ -91,5 +95,18 @@ public class ApiController {
         this.placeService.updatePlace(existingPlace);
 
         return "OK";
+    }
+    @GetMapping("/images")
+    @CrossOrigin("*")
+    @ResponseBody
+    public List<Image> getAllImages() {
+        return imageService.getImages();
+
+    }
+    @GetMapping("/images/{legendId}")
+    @CrossOrigin("*")
+    @ResponseBody
+    public List<Image> getImagesByLegendId(@PathVariable UUID legendId) {
+        return imageService.getImagesByLegendId(legendId);
     }
 }
