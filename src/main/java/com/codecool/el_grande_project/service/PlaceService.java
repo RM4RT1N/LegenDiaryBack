@@ -1,29 +1,36 @@
 package com.codecool.el_grande_project.service;
 
+import com.codecool.el_grande_project.DTO.PlaceDTO;
 import com.codecool.el_grande_project.entity.City;
 import com.codecool.el_grande_project.entity.Place;
+import com.codecool.el_grande_project.mappers.PlaceMapper;
 import com.codecool.el_grande_project.repository.PlaceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import com.codecool.el_grande_project.util.CalculateDistance;
 @Service
 public class PlaceService {
+
+    private final PlaceMapper placeMapper;
     private final PlaceRepository placeRepository;
     private final CityService cityService;
 
 
-    public PlaceService(PlaceRepository placeRepository, CityService cityService) {
+    public PlaceService(PlaceRepository placeRepository, CityService cityService, PlaceMapper placeMapper) {
         this.placeRepository = placeRepository;
         this.cityService = cityService;
+        this.placeMapper = placeMapper;
 
     }
 
-    public List<Place> getPlaces(){
-        return this.placeRepository.findAll();
+    public List<PlaceDTO> getPlaces(){
+        List<Place> places = this.placeRepository.findAll();
+        return places.stream().map(placeMapper::mapPlaceToDTO).toList();
     }
 
     public List<Place> getNearbyPlaces(double lat, double lng, double distance) {
@@ -53,7 +60,7 @@ public class PlaceService {
     }
 
 
-    public Place getPlaceById(Long id) {
+    public Place getPlaceById(UUID id) {
         Optional<Place> optionalPlace = placeRepository.findById(id);
         if (optionalPlace.isPresent()) {
             return optionalPlace.get();
@@ -68,7 +75,6 @@ public class PlaceService {
             placeToEdit.setDescription(newDataPlace.getDescription());
             placeToEdit.setLatitude(newDataPlace.getLatitude());
             placeToEdit.setLongitude(newDataPlace.getLongitude());
-            placeToEdit.setAdded_by_id_user(newDataPlace.getAdded_by_id_user());
             placeToEdit.setCategory_id(newDataPlace.getCategory_id());
         }
         else{

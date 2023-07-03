@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/user/**").permitAll()
+                .requestMatchers("/api/add-legend").permitAll()
+                .requestMatchers("/places'").permitAll()
                 .and()
                 .httpBasic();
         http.addFilterBefore(myJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -3,11 +3,13 @@ package com.codecool.el_grande_project.controller;
 import com.codecool.el_grande_project.DTO.AuthResponseDTO;
 import com.codecool.el_grande_project.DTO.LoginDTO;
 import com.codecool.el_grande_project.DTO.RegisterDTO;
+import com.codecool.el_grande_project.DTO.TokenDTO;
 import com.codecool.el_grande_project.entity.Role;
 import com.codecool.el_grande_project.entity.UserEntity;
 import com.codecool.el_grande_project.repository.RoleRepository;
 import com.codecool.el_grande_project.repository.UserRepository;
 import com.codecool.el_grande_project.security.JwtGenerator;
+import com.codecool.el_grande_project.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +29,16 @@ public class AuthController {
     private RoleRepository roleRepository;
     private  PasswordEncoder passwordEncoder;
     private JwtGenerator jwtGenerator;
+    private TokenService tokenService;
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtGenerator jwtGenerator) {
+                          RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtGenerator jwtGenerator, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtGenerator=jwtGenerator;
+        this.jwtGenerator = jwtGenerator;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/register")
@@ -56,9 +60,13 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginDTO.username(), loginDTO.password()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-
-
         return new ResponseEntity<>(new AuthResponseDTO(token),HttpStatus.OK);
+    }
+
+    @PostMapping("/logout")
+    public  ResponseEntity<String> logout(@RequestBody TokenDTO token){
+        tokenService.addTokenToBlackList(token);
+        return new ResponseEntity<>("Loged out correctly", HttpStatus.OK);
     }
 
 }

@@ -1,11 +1,11 @@
 package com.codecool.el_grande_project.DTO;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.UUID;
-@Data
-public class PlaceDTO {
-    private UUID id;
+
+@Getter
+public class NewPlaceDTO {
     private UUID userId;
     private Long category_id;
     private double latitude;
@@ -13,8 +13,7 @@ public class PlaceDTO {
     private String description;
     private String name;
 
-    public PlaceDTO(UUID id, UUID userId, Long category_id, String description, String name, double longitude, double latitude) {
-        this.id = id;
+    public NewPlaceDTO(UUID userId, Long category_id, String description, String name, double longitude, double latitude) {
         this.userId = userId;
         this.category_id = category_id;
         this.description = description;
