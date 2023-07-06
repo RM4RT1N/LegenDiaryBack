@@ -13,12 +13,16 @@ import java.util.UUID;
 @Entity
 public class Image {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id =UUID.randomUUID();
     private UUID place_id;
     private String imageUrl;
 
     public Image() {
 
+    }
+
+    public Image(UUID place_id, String imageUrl) {
+        this.place_id = place_id;
+        this.imageUrl = imageUrl;
     }
 }

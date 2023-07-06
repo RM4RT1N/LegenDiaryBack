@@ -13,6 +13,7 @@ import com.codecool.el_grande_project.service.ImageService;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,13 +64,19 @@ public class ApiController {
     @PostMapping("/api/add-legend")
     public String saveLegend(@RequestBody NewPlaceDTO newPlaceDto) {
         UserEntity user = userRepository.findById(newPlaceDto.getUserId()).get();
-        this.placeService.addPlace(new Place(
+        Place place = new Place(
                 user,
                 newPlaceDto.getCategory_id(),
                 newPlaceDto.getLatitude(),
                 newPlaceDto.getLongitude(),
                 newPlaceDto.getDescription(),
-                newPlaceDto.getName()));
+                newPlaceDto.getName());
+
+        this.placeService.addPlace(place);
+        newPlaceDto.getImageUrls().forEach(image->{
+            this.imageService.addImage(new Image(place.getId(),image));
+        });
+
         return "OK";
     }
     @GetMapping("/place/{id}")
