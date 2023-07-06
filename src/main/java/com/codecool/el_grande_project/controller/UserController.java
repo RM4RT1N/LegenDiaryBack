@@ -1,5 +1,6 @@
 package com.codecool.el_grande_project.controller;
 
+
 import com.codecool.el_grande_project.DTO.UserWithPlacesAndRolesDTO;
 import com.codecool.el_grande_project.service.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
+
     public UserWithPlacesAndRolesDTO getUserByUsername(@PathVariable String username){
         return userService.getUserByUsername(username);
     }

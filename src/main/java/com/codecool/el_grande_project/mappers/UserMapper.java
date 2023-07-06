@@ -16,7 +16,9 @@ public class UserMapper {
         return new UserDTO(user.getId(),user.getNickname(), user.getUsername(), user.getAvatar_image_id(), user.getPoints(), user.getAddress_id());
     }
 
+
     public UserWithPlacesAndRolesDTO mapUserAndPlacesToDTOWithPlaces(UserEntity user, List<PlaceDTO> places, List<RoleDTO> roles) {
         return new UserWithPlacesAndRolesDTO(user.getId(),user.getNickname(),user.getUsername(),user.getAvatar_image_id(),user.getPoints(),user.getAddress_id(),places,roles);
+
     }
 }
