@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/user/**").permitAll()
                 .requestMatchers("/api/add-legend").permitAll()
                 .requestMatchers("/places'").permitAll()
+                .requestMatchers("/placesToAccept'").permitAll()
+                .requestMatchers("/api/accept-legend/**").permitAll()
                 .and()
                 .httpBasic();
         http.addFilterBefore(myJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

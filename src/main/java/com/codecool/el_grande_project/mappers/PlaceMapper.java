@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class PlaceMapper {
     public PlaceDTO mapPlaceToDTO(Place place){
-        return new PlaceDTO(place.getId(),place.getUser().getId(),place.getCategory_id(), place.getDescription(), place.getName(), place.getLongitude(), place.getLatitude());
+        return new PlaceDTO(place.getId(),place.getUser().getId(),place.getCategory_id(), place.getDescription(), place.getName(), place.getLongitude(), place.getLatitude(),place.isApproved());
     }
 }

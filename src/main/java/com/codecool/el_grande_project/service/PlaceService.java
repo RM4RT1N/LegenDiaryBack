@@ -30,7 +30,11 @@ public class PlaceService {
 
     public List<PlaceDTO> getPlaces(){
         List<Place> places = this.placeRepository.findAll();
-        return places.stream().map(placeMapper::mapPlaceToDTO).toList();
+        return places.stream().filter(Place::isApproved).map(placeMapper::mapPlaceToDTO).toList();
+    }
+    public List<PlaceDTO> getPlacesToAccepted(){
+        List<Place> places = this.placeRepository.findAll();
+        return places.stream().filter(place -> !place.isApproved()).map(placeMapper::mapPlaceToDTO).toList();
     }
 
     public List<Place> getNearbyPlaces(double lat, double lng, double distance) {
@@ -76,6 +80,18 @@ public class PlaceService {
             placeToEdit.setLatitude(newDataPlace.getLatitude());
             placeToEdit.setLongitude(newDataPlace.getLongitude());
             placeToEdit.setCategory_id(newDataPlace.getCategory_id());
+            placeToEdit.setApproved(false);
+        }
+        else{
+            throw new NoSuchElementException("Place with ID " + newDataPlace.getId() + " does not exist");
+        }
+        placeRepository.save(placeToEdit);
+
+    }
+    public void AcceptPlace(Place newDataPlace){
+        Place placeToEdit = getPlaceById(newDataPlace.getId());
+        if (placeToEdit != null){
+            placeToEdit.setApproved(true);
         }
         else{
             throw new NoSuchElementException("Place with ID " + newDataPlace.getId() + " does not exist");

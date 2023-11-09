@@ -25,15 +25,17 @@ public class Place {
     private double longitude;
     private String description;
     private String name;
+    private boolean approved;
 
 
 
-    public Place(UserEntity user, Long category_id, double latitude, double longitude, String description, String name) {
+    public Place(UserEntity user, Long category_id, double latitude, double longitude, String description, String name,boolean approved) {
         this.user = user;
         this.category_id = category_id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
         this.name = name;
+        this.approved=approved;
     }
 }

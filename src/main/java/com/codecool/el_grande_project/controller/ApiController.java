@@ -39,6 +39,13 @@ public class ApiController {
         return placeService.getPlaces();
 
     }
+
+    @GetMapping("/placesToAccept")
+    @ResponseBody
+    public List<PlaceDTO> getPlacesToAccepted() {
+        return placeService.getPlacesToAccepted();
+
+    }
     @GetMapping("/placesContainWord")
     @ResponseBody
     public List<Place> getPlacesContainWord(@RequestParam String word) {
@@ -70,7 +77,9 @@ public class ApiController {
                 newPlaceDto.getLatitude(),
                 newPlaceDto.getLongitude(),
                 newPlaceDto.getDescription(),
-                newPlaceDto.getName());
+                newPlaceDto.getName(),
+                newPlaceDto.isApproved());
+
 
         this.placeService.addPlace(place);
         newPlaceDto.getImageUrls().forEach(image->{
@@ -84,8 +93,19 @@ public class ApiController {
     public Place onePlace(@PathVariable("id") UUID id) {
         return this.placeService.getPlaceById(id);
     }
-    @PatchMapping("/api/edit-legend/{id}")
+    @PatchMapping("/api/accept-legend/{id}")
+    public String AcceptPlace (@PathVariable("id") UUID id, @RequestBody NewPlaceDTO newPlaceDto) {
+        Place existingPlace = onePlace(id);
 
+        if (existingPlace == null) {
+            return "Obiekt o podanym identyfikatorze nie istnieje";
+        }
+
+        this.placeService.AcceptPlace(existingPlace);
+
+        return "OK";
+    }
+    @PatchMapping("/api/edit-legend/{id}")
     public String updateLegend(@PathVariable("id") UUID id, @RequestBody NewPlaceDTO newPlaceDto) {
         Place existingPlace = onePlace(id);
 

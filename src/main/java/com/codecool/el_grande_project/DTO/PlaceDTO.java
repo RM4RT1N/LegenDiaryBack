@@ -12,8 +12,9 @@ public class PlaceDTO {
     private double longitude;
     private String description;
     private String name;
+    private boolean approved;
 
-    public PlaceDTO(UUID id, UUID userId, Long category_id, String description, String name, double longitude, double latitude) {
+    public PlaceDTO(UUID id, UUID userId, Long category_id, String description, String name, double longitude, double latitude,boolean approved) {
         this.id = id;
         this.userId = userId;
         this.category_id = category_id;
@@ -21,5 +22,6 @@ public class PlaceDTO {
         this.name = name;
         this.longitude = longitude;
         this.latitude=latitude;
+        this.approved=approved;
     }
 }

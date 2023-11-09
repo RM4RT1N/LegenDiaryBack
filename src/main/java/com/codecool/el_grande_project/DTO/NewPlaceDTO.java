@@ -14,8 +14,9 @@ public class NewPlaceDTO {
     private String description;
     private String name;
     private ArrayList<String> imageUrls;
+    private boolean approved;
 
-    public NewPlaceDTO(UUID userId, Long category_id, String description, String name, double longitude, double latitude,ArrayList<String> imageUrls) {
+    public NewPlaceDTO(UUID userId, Long category_id, String description, String name, double longitude, double latitude,ArrayList<String> imageUrls,boolean approved) {
         this.userId = userId;
         this.category_id = category_id;
         this.description = description;
@@ -23,5 +24,6 @@ public class NewPlaceDTO {
         this.longitude = longitude;
         this.latitude=latitude;
         this.imageUrls=imageUrls;
+        this.approved=approved;
     }
 }
